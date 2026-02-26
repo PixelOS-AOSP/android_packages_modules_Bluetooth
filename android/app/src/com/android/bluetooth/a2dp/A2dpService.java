@@ -142,7 +142,12 @@ public class A2dpService extends ConnectableProfile {
     }
 
     public static boolean isEnabled() {
-        return BluetoothProperties.isProfileA2dpSourceEnabled().orElse(false);
+        // Savitech Debug: always enable A2DP service
+        //  Or "setprop bluetooth.profile.a2dp.source.enabled true"
+        Log.d(TAG, "Savitech: always enable A2DP service for test!");
+        return true;
+
+        //return BluetoothProperties.isProfileA2dpSourceEnabled().orElse(false);
     }
 
     @Override
