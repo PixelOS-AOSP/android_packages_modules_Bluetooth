@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3306f11_fb476fa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000090
+      },
+      "writtenOn": "2026-09-12T18:58:33Z",
+      "side": 1,
+      "message": "LineageOS Change \nhttps://review.lineageos.org/c/LineageOS/android_packages_modules_Bluetooth/+/481965",
+      "revId": "a7b666d3eb2015166582aa8a3a874a1f23a69c6e",
+      "serverId": "58543e18-2196-4633-8043-7787712585ad"
+    }
+  ]
+}
