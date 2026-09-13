@@ -33,6 +33,24 @@
       "message": "Seems like none of the devices on our roster need it. Let\u0027s have it on our gerrit just in case",
       "revId": "a7b666d3eb2015166582aa8a3a874a1f23a69c6e",
       "serverId": "58543e18-2196-4633-8043-7787712585ad"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32d6519a_bbb35c1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000090
+      },
+      "writtenOn": "2026-09-13T11:33:13Z",
+      "side": 1,
+      "message": "If you add it, then it\u0027s one less patch I have to do 😭",
+      "parentUuid": "785ce2e0_a535ac05",
+      "revId": "a7b666d3eb2015166582aa8a3a874a1f23a69c6e",
+      "serverId": "58543e18-2196-4633-8043-7787712585ad"
     }
   ]
 }
