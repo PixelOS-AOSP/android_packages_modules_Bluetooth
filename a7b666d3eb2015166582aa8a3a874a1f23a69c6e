@@ -16,6 +16,23 @@
       "message": "LineageOS Change \nhttps://review.lineageos.org/c/LineageOS/android_packages_modules_Bluetooth/+/481965",
       "revId": "a7b666d3eb2015166582aa8a3a874a1f23a69c6e",
       "serverId": "58543e18-2196-4633-8043-7787712585ad"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "785ce2e0_a535ac05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000018
+      },
+      "writtenOn": "2026-09-13T02:11:43Z",
+      "side": 1,
+      "message": "Seems like none of the devices on our roster need it. Let\u0027s have it on our gerrit just in case",
+      "revId": "a7b666d3eb2015166582aa8a3a874a1f23a69c6e",
+      "serverId": "58543e18-2196-4633-8043-7787712585ad"
     }
   ]
 }
