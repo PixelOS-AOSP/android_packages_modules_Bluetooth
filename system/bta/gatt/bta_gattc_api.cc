@@ -259,6 +259,27 @@ void BTA_GATTC_ReadCharacteristic(tCONN_ID conn_id, uint16_t handle, tGATT_AUTH_
 }
 
 /**
+ * This function is called to read a single part of a characteristic value,
+ * starting at |offset| (ATT Read Blob Request).
+ */
+void BTA_GATTC_ReadCharacteristicBlob(tCONN_ID conn_id, uint16_t handle, uint16_t offset,
+																			tGATT_AUTH_REQ auth_req, GATT_READ_OP_CB callback,
+																			void* cb_data) {
+	tBTA_GATTC_API_READ* p_buf = (tBTA_GATTC_API_READ*)osi_calloc(sizeof(tBTA_GATTC_API_READ));
+
+	p_buf->hdr.event = BTA_GATTC_API_READ_EVT;
+	p_buf->hdr.layer_specific = static_cast<uint16_t>(conn_id);
+	p_buf->is_multi_read = false;
+	p_buf->auth_req = auth_req;
+	p_buf->handle = handle;
+	p_buf->offset = offset;
+	p_buf->read_cb = callback;
+	p_buf->read_cb_data = cb_data;
+
+	bta_sys_sendmsg(p_buf);
+}
+
+/**
  * This function is called to read a value of characteristic with uuid equal to
  * |uuid|
  */

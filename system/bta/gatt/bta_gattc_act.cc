@@ -575,7 +575,14 @@ void bta_gattc_read(tBTA_GATTC_CLCB* p_clcb, const tBTA_GATTC_DATA* p_data) {
   }
 
   tGATT_STATUS status;
-  if (p_data->api_read.handle != 0) {
+	if (p_data->api_read.handle != 0 && p_data->api_read.offset != 0) {
+		tGATT_READ_PARAM read_param;
+		memset(&read_param, 0, sizeof(tGATT_READ_PARAM));
+		read_param.partial.handle = p_data->api_read.handle;
+		read_param.partial.offset = p_data->api_read.offset;
+		read_param.partial.auth_req = p_data->api_read.auth_req;
+		status = GATTC_Read(p_clcb->bta_conn_id, GATT_READ_PARTIAL, &read_param);
+	} else if (p_data->api_read.handle != 0) {
     tGATT_READ_PARAM read_param;
     memset(&read_param, 0, sizeof(tGATT_READ_PARAM));
     read_param.by_handle.handle = p_data->api_read.handle;

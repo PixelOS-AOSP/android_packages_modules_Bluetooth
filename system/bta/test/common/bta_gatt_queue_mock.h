@@ -31,6 +31,9 @@ public:
   MOCK_METHOD((void), WriteCharacteristic,
               (uint16_t conn_id, uint16_t handle, std::vector<uint8_t> value,
                tGATT_WRITE_TYPE write_type, GATT_WRITE_OP_CB cb, void* cb_data));
+	MOCK_METHOD(void, ReadCharacteristicBlob,
+							(uint16_t conn_id, uint16_t handle, uint16_t offset, GATT_READ_OP_CB cb,
+							 void* cb_data));
   MOCK_METHOD((void), WriteDescriptor,
               (uint16_t conn_id, uint16_t handle, std::vector<uint8_t> value,
                tGATT_WRITE_TYPE write_type, GATT_WRITE_OP_CB cb, void* cb_data));

@@ -106,6 +106,7 @@ typedef struct {
 
   // read by handle data
   uint16_t handle;
+	uint16_t offset;
 
   // read by UUID data
   bluetooth::Uuid uuid;

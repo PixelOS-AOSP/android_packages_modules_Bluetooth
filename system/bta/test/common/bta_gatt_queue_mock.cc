@@ -32,6 +32,11 @@ void BtaGattQueue::ReadCharacteristic(uint16_t conn_id, uint16_t handle, GATT_RE
   gatt_queue->ReadCharacteristic(conn_id, handle, cb, cb_data);
 }
 
+void BtaGattQueue::ReadCharacteristicBlob(uint16_t conn_id, uint16_t handle, uint16_t offset,
+																					GATT_READ_OP_CB cb, void* cb_data) {
+	gatt_queue->ReadCharacteristicBlob(conn_id, handle, offset, cb, cb_data);
+}
+
 void BtaGattQueue::WriteCharacteristic(uint16_t conn_id, uint16_t handle,
                                        std::vector<uint8_t> value, tGATT_WRITE_TYPE write_type,
                                        GATT_WRITE_OP_CB cb, void* cb_data) {

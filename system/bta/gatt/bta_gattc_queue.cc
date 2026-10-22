@@ -36,6 +36,7 @@ constexpr uint8_t GATT_WRITE_CHAR = 3;
 constexpr uint8_t GATT_WRITE_DESC = 4;
 constexpr uint8_t GATT_CONFIG_MTU = 5;
 constexpr uint8_t GATT_READ_MULTI = 6;
+constexpr uint8_t GATT_READ_CHAR_BLOB = 7;
 
 struct gatt_read_op_data {
   GATT_READ_OP_CB cb;
@@ -176,6 +177,13 @@ void BtaGattQueue::gatt_execute_next_op(tCONN_ID conn_id) {
     BTA_GATTC_ReadCharacteristic(conn_id, op.handle, GATT_AUTH_REQ_NONE, gatt_read_op_finished,
                                  data);
 
+	} else if (op.type == GATT_READ_CHAR_BLOB) {
+		gatt_read_op_data* data = (gatt_read_op_data*)osi_malloc(sizeof(gatt_read_op_data));
+		data->cb = op.read_cb;
+		data->cb_data = op.read_cb_data;
+		BTA_GATTC_ReadCharacteristicBlob(conn_id, op.handle, op.offset, GATT_AUTH_REQ_NONE,
+																		 gatt_read_op_finished, data);
+
   } else if (op.type == GATT_READ_DESC) {
     gatt_read_op_data* data = (gatt_read_op_data*)osi_malloc(sizeof(gatt_read_op_data));
     data->cb = op.read_cb;
@@ -226,6 +234,16 @@ void BtaGattQueue::ReadCharacteristic(tCONN_ID conn_id, uint16_t handle, GATT_RE
   gatt_op_queue[conn_id].push_back(
           {.type = GATT_READ_CHAR, .handle = handle, .read_cb = cb, .read_cb_data = cb_data});
   gatt_execute_next_op(conn_id);
+}
+
+void BtaGattQueue::ReadCharacteristicBlob(tCONN_ID conn_id, uint16_t handle, uint16_t offset,
+																					GATT_READ_OP_CB cb, void* cb_data) {
+	gatt_op_queue[conn_id].push_back({.type = GATT_READ_CHAR_BLOB,
+																		.handle = handle,
+																		.offset = offset,
+																		.read_cb = cb,
+																		.read_cb_data = cb_data});
+	gatt_execute_next_op(conn_id);
 }
 
 void BtaGattQueue::ReadDescriptor(tCONN_ID conn_id, uint16_t handle, GATT_READ_OP_CB cb,

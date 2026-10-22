@@ -108,6 +108,13 @@ void BTA_GATTC_ReadCharacteristic(tCONN_ID conn_id, uint16_t handle, tGATT_AUTH_
   gatt_interface->ReadCharacteristic(conn_id, handle, auth_req, callback, cb_data);
 }
 
+void BTA_GATTC_ReadCharacteristicBlob(tCONN_ID conn_id, uint16_t handle, uint16_t offset,
+																			tGATT_AUTH_REQ auth_req, GATT_READ_OP_CB callback,
+																			void* cb_data) {
+	log::assert_that(gatt_interface != nullptr, "Mock GATT interface not set!");
+	gatt_interface->ReadCharacteristicBlob(conn_id, handle, offset, auth_req, callback, cb_data);
+}
+
 void BTA_GATTC_ReadUsingCharUuid(tCONN_ID conn_id, const bluetooth::Uuid& uuid, uint16_t s_handle,
                                  uint16_t e_handle, tGATT_AUTH_REQ auth_req,
                                  GATT_READ_OP_CB callback, void* cb_data) {

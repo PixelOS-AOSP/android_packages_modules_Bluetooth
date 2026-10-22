@@ -49,6 +49,9 @@ public:
   virtual const Characteristic* GetOwningCharacteristic(tCONN_ID conn_id, uint16_t handle) = 0;
   virtual void ReadCharacteristic(tCONN_ID conn_id, uint16_t handle, tGATT_AUTH_REQ auth_req,
                                   GATT_READ_OP_CB callback, void* cb_data) = 0;
+	virtual void ReadCharacteristicBlob(tCONN_ID conn_id, uint16_t handle, uint16_t offset,
+																			tGATT_AUTH_REQ auth_req, GATT_READ_OP_CB callback,
+																			void* cb_data) = 0;
   virtual void ReadUsingCharUuid(tCONN_ID conn_id, const bluetooth::Uuid& uuid, uint16_t s_handle,
                                  uint16_t e_handle, tGATT_AUTH_REQ auth_req,
                                  GATT_READ_OP_CB callback, void* cb_data) = 0;
@@ -124,6 +127,10 @@ public:
               (tCONN_ID conn_id, uint16_t handle, tGATT_AUTH_REQ auth_req, GATT_READ_OP_CB callback,
                void* cb_data),
               (override));
+	MOCK_METHOD((void), ReadCharacteristicBlob,
+							(tCONN_ID conn_id, uint16_t handle, uint16_t offset, tGATT_AUTH_REQ auth_req,
+							 GATT_READ_OP_CB callback, void* cb_data),
+							(override));
   MOCK_METHOD((void), ReadUsingCharUuid,
               (tCONN_ID conn_id, const bluetooth::Uuid& uuid, uint16_t s_handle, uint16_t e_handle,
                tGATT_AUTH_REQ auth_req, GATT_READ_OP_CB callback, void* cb_data),
