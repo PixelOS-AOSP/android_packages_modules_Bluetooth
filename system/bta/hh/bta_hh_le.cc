@@ -79,6 +79,9 @@ using namespace bluetooth;
 namespace {
 
 constexpr char kBtmLogTag[] = "LE HIDH";
+
+// Largest report map read past GATT_MAX_ATTR_LEN, the kernel's HID_MAX_DESCRIPTOR_SIZE
+constexpr uint16_t kMaxLongReportMapLen = 4096;
 }
 
 static const uint16_t bta_hh_uuid_to_rtp_type[BTA_LE_HID_RTP_UUID_MAX][2] = {
@@ -1326,7 +1329,36 @@ void bta_hh_le_save_report_map(tBTA_HH_DEV_CB* p_dev_cb, uint16_t len, uint8_t* 
   }
 }
 
-static void read_hid_report_map_cb(tCONN_ID /*conn_id*/, tGATT_STATUS status, uint16_t /*handle*/,
+static void read_hid_report_map_blob_cb(tCONN_ID conn_id, tGATT_STATUS status, uint16_t handle,
+																				uint16_t len, uint8_t* value, void* data) {
+	tBTA_HH_DEV_CB* p_dev_cb = (tBTA_HH_DEV_CB*)data;
+	tBTA_HH_LE_HID_SRVC* p_srvc = &p_dev_cb->hid_srvc;
+	uint16_t offset = p_srvc->descriptor.dl_len;
+
+	if (p_srvc->rpt_map != nullptr && status == GATT_SUCCESS && len > 0 &&
+			offset + len <= kMaxLongReportMapLen) {
+		uint8_t* rpt_map = (uint8_t*)osi_malloc(offset + len);
+		memcpy(rpt_map, p_srvc->rpt_map, offset);
+		memcpy(rpt_map + offset, value, len);
+		osi_free(p_srvc->rpt_map);
+		p_srvc->rpt_map = rpt_map;
+		p_srvc->descriptor.dl_len = offset + len;
+		p_srvc->descriptor.dsc_list = rpt_map;
+
+		BtaGattQueue::ReadCharacteristicBlob(conn_id, handle, offset + len, read_hid_report_map_blob_cb,
+																				 p_dev_cb);
+		return;
+	}
+
+	// Past the end of the value, the device returns an empty value or an Invalid Offset error
+	log::info("Report map length:{}, status:{}", offset, status);
+	p_dev_cb->disc_active &= ~BTA_HH_LE_DISC_RPT_MAP;
+	if (p_dev_cb->state == BTA_HH_W4_CONN_ST) {
+		bta_hh_le_open_cmpl(p_dev_cb);
+	}
+}
+
+static void read_hid_report_map_cb(tCONN_ID conn_id, tGATT_STATUS status, uint16_t handle,
                                    uint16_t len, uint8_t* value, void* data) {
   if (status != GATT_SUCCESS) {
     log::error("error reading characteristic:{}", status);
@@ -1335,6 +1367,17 @@ static void read_hid_report_map_cb(tCONN_ID /*conn_id*/, tGATT_STATUS status, ui
 
   tBTA_HH_DEV_CB* p_dev_cb = (tBTA_HH_DEV_CB*)data;
   bta_hh_le_save_report_map(p_dev_cb, len, value);
+
+	// Some devices serve the part of their report map past GATT_MAX_ATTR_LEN with Read Blob
+	// Requests. Read the rest of it before the connection is reported as opened.
+	if (len == GATT_MAX_ATTR_LEN &&
+			interop_match_vendor_product_ids(INTEROP_HOGP_READ_LONG_REPORT_MAP,
+																			 p_dev_cb->dscp_info.vendor_id,
+																			 p_dev_cb->dscp_info.product_id)) {
+		p_dev_cb->disc_active |= BTA_HH_LE_DISC_RPT_MAP;
+		BtaGattQueue::ReadCharacteristicBlob(conn_id, handle, len, read_hid_report_map_blob_cb,
+																				 p_dev_cb);
+	}
 }
 
 static void read_ext_rpt_ref_desc_cb(tCONN_ID /*conn_id*/, tGATT_STATUS status, uint16_t /*handle*/,

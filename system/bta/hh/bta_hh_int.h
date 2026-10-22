@@ -221,6 +221,7 @@ typedef struct {
 #define BTA_HH_LE_DISC_HIDS 0x01
 #define BTA_HH_LE_DISC_DIS 0x02
 #define BTA_HH_LE_DISC_SCPS 0x04
+#define BTA_HH_LE_DISC_RPT_MAP 0x08
 
   uint8_t disc_active;
   bthh_status_t status;

@@ -368,6 +368,11 @@ typedef enum {
   // attribute value length (512 bytes).
   INTEROP_HOGP_LONG_REPORT,
 
+	// Some HOGP devices have the report map longer than the maximum GATT
+	// attribute value length (512 bytes), but serve the rest of it with
+	// Read Blob Requests past that length.
+	INTEROP_HOGP_READ_LONG_REPORT_MAP,
+
   // Some HOGP devices requires MTU exchange be part of the initial setup to
   // function.
   INTEROP_HOGP_FORCE_MTU_EXCHANGE,
