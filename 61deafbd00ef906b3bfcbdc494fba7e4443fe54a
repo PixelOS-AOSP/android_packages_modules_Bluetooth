@@ -33,6 +33,24 @@
       "message": "@angxddeep@gmail.com do you actually need this change tho. like what happens without it?",
       "revId": "61deafbd00ef906b3bfcbdc494fba7e4443fe54a",
       "serverId": "58543e18-2196-4633-8043-7787712585ad"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9673a53b_fb5018f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000090
+      },
+      "writtenOn": "2026-11-12T06:40:34Z",
+      "side": 1,
+      "message": "A2dp offload doesn\u0027t work on mediatek devices without it, basically oss mediatek bluetooth audio interfaces got merged in hardware/mediatek which require these",
+      "parentUuid": "85e6a42a_066bf6f7",
+      "revId": "61deafbd00ef906b3bfcbdc494fba7e4443fe54a",
+      "serverId": "58543e18-2196-4633-8043-7787712585ad"
     }
   ]
 }
